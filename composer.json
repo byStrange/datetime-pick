@@ -1,5 +1,5 @@
 {
-    "name": "yii2-extensions/datetime-picker",
+    "name": "byStrange/datetime-picker",
     "type": "library",
     "description": "Date and time picker for Yii Framework.",
     "keywords": [
