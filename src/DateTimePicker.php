@@ -119,7 +119,7 @@ final class DateTimePicker extends InputWidget
                 };
             }
 
-            $("#$this->id").tempusDominus(config);})();
+            $("#$this->id").datetimepicker(config);})();
         JS;
     }
 
