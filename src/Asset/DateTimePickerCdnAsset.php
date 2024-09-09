@@ -30,6 +30,9 @@ final class DateTimePickerCdnAsset extends AssetBundle
         ];
         $this->js = [
             [
+                'https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js',
+            ],
+            [
                 'https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.39.2/build/js/tempusdominus-bootstrap-4.min.js',
                 'crossorigin' => 'anonymous',
             ],
