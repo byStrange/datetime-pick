@@ -11,7 +11,7 @@ use yii\{base\InvalidConfigException, helpers\Html, widgets\InputWidget};
 
 final class DateTimePicker extends InputWidget
 {
-    public bool $cdn = false;
+    public bool $cdn = true;
     /**
      * @phpstan-var array<string, mixed>
      */
