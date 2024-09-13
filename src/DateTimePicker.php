@@ -11,14 +11,14 @@ use yii\{base\InvalidConfigException, helpers\Html, widgets\InputWidget};
 
 final class DateTimePicker extends InputWidget
 {
-    public bool $cdn = true;
+    public bool $cdn = false;
     /**
      * @phpstan-var array<string, mixed>
      */
     public array $config = [];
     public string $containerClass = 'input-group';
     public bool $floatingLabel = false;
-    public string $format = 'yyyy-MM-dd HH:mm:ss';
+    public string $format = 'yyyy-MM-dd HH:mm:ssZZ';
     public string $formatMonth = 'long';
     public string $formatYear = 'numeric';
     public string $icon = '';
@@ -100,6 +100,11 @@ final class DateTimePicker extends InputWidget
 
             const config = JSON.parse('$config');
 
+            var el = document.querySelector('#$this->id input');
+            (config.display.value &&(el.value = config.display.value));
+
+            delete config.display.value;
+
             if (config.display && config.display.theme) {
                 theme = config.display.theme;
             } else if (!theme) {
@@ -107,19 +112,26 @@ final class DateTimePicker extends InputWidget
                 theme = prefersDark ? 'dark' : 'light';
             }
 
-            if (theme === 'dark' || theme === 'auto') {
-                config.display = {
-                    theme: 'dark',
-                };
+
+            const picker =
+                new tempusDominus.TempusDominus(document.getElementById('$this->id'), config);
+            picker.dates.formatInput = (date) => {
+                return moment(el.value, 'YYYY-MM-DD HH:mm:ssZ').format("YYYY-MM-DD HH:mm:ssZ");
             }
 
-            if (theme === 'light') {
-                config.display = {
-                    theme: 'light',
-                };
+            if (el.value) {
+                const parsedDate = moment(el.value, 'YYYY-MM-DD HH:mm:ssZ').toDate(); // Parse the input value to a date
+                picker.dates.setValue(tempusDominus.DateTime.convert(parsedDate)); // Set the date in the picker
+
             }
 
-            $("#$this->id").datetimepicker(config);})();
+            picker.subscribe(tempusDominus.Namespace.events.change, (event) => {
+                if (event.type === 'change.td') {
+                    el.value = moment(event.date).format('YYYY-MM-DD HH:mm:ssZ')
+                }
+            });
+        })();
+
         JS;
     }
 
